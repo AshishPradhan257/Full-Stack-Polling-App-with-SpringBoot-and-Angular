@@ -1,1 +1,60 @@
-<h2>Available Polls</h2>
+<div class="container mt-4">
+    <h2 class="text-center">Create Poll</h2>
+    <div class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label class="form-label font-weight-bold">Question</label>
+            <input 
+                type="text"
+                [(ngModel)]="newPoll.question"
+                placeholder="What is your question?"
+                class="form-control"
+                required
+            />
+        </div>
+
+        <div class="options-container mb-3">
+            <label class="form-label">Options</label>
+            @for (option of newPoll.options; track $index) {
+                <div class="input-group mb-2">
+                    <span class="input-group-text">{{ $index + 1 }}</span>
+                    <input 
+                        type="text"
+                        [(ngModel)]="newPoll.options[$index].voteOption"
+                        placeholder="Option text"
+                        class="form-control"
+                        required
+                    />
+                </div>
+            }
+        </div>
+
+        <div class="d-grid gap-2">
+            <button (click)="createPoll()" class="btn btn-primary btn-lg">
+                Create Poll
+            </button>
+        </div>
+    </div>
+
+    <h2 class="mt-5 text-center">Available Polls</h2>
+    <hr />
+
+    <div class="polls-list">
+        @for (poll of polls; track poll.id) {
+            <div class="card border rounded p-3 mb-4 shadow-sm">
+                <h3 class="h5 mb-3">{{ poll.question }}</h3>
+                <div class="options-list d-flex flex-wrap gap-2">
+                    @for (option of poll.options; track option.voteOption) {
+                        <button class="btn btn-outline-primary">
+                            {{ option.voteOption }} 
+                            <span class="badge bg-primary ms-2">{{ option.voteCount }} votes</span>
+                        </button>
+                    }
+                </div>
+            </div>
+        } @empty {
+            <div class="alert alert-info text-center mt-4">
+                <p class="mb-0">No polls available yet. Be the first to create one!</p>
+            </div>
+        }
+    </div>
+</div>
