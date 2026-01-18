@@ -8,6 +8,7 @@
                 [(ngModel)]="newPoll.question"
                 placeholder="What is your question?"
                 class="form-control"
+                name="pollQuestion"
                 required
             />
         </div>
@@ -22,6 +23,7 @@
                         [(ngModel)]="newPoll.options[$index].voteOption"
                         placeholder="Option text"
                         class="form-control"
+                        [name]="'option' + $index"
                         required
                     />
                 </div>
@@ -29,7 +31,7 @@
         </div>
 
         <div class="d-grid gap-2">
-            <button (click)="createPoll()" class="btn btn-primary btn-lg">
+            <button (click)="createPoll()" class="btn btn-primary btn-lg" [disabled]="!newPoll.question">
                 Create Poll
             </button>
         </div>
@@ -43,8 +45,8 @@
             <div class="card border rounded p-3 mb-4 shadow-sm">
                 <h3 class="h5 mb-3">{{ poll.question }}</h3>
                 <div class="options-list d-flex flex-wrap gap-2">
-                    @for (option of poll.options; track option.voteOption) {
-                        <button class="btn btn-outline-primary">
+                    @for (option of poll.options; track $index; let i = $index) {
+                        <button (click)="vote(poll.id, i)" class="btn btn-outline-primary">
                             {{ option.voteOption }} 
                             <span class="badge bg-primary ms-2">{{ option.voteCount }} votes</span>
                         </button>
